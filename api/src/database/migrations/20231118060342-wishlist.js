@@ -19,6 +19,7 @@ module.exports = {
         },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
+        primaryKey: true,
       },
       user_id: {
         type: Sequelize.INTEGER,
@@ -29,6 +30,7 @@ module.exports = {
         },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
+        primaryKey: true,
       },
     });
   },

@@ -19,6 +19,7 @@ module.exports = {
         },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
+        primaryKey: true,
       },
       quantity: {
         type: Sequelize.INTEGER,
@@ -33,6 +34,7 @@ module.exports = {
         },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
+        primaryKey: true,
       },
     });
   },

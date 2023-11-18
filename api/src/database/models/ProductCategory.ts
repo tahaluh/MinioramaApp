@@ -21,6 +21,7 @@ ProductCategory.init(
       },
       onUpdate: "CASCADE",
       onDelete: "CASCADE",
+      primaryKey: true,
     },
     categoryId: {
       type: sequelize.INTEGER,
@@ -31,6 +32,7 @@ ProductCategory.init(
       },
       onUpdate: "CASCADE",
       onDelete: "CASCADE",
+      primaryKey: true,
     },
   },
   {

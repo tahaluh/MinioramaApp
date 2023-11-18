@@ -30,6 +30,7 @@ Cart.init(
       },
       onUpdate: "CASCADE",
       onDelete: "CASCADE",
+      primaryKey: true,
     },
     quantity: {
       type: sequelize.INTEGER,
@@ -44,6 +45,7 @@ Cart.init(
       },
       onUpdate: "CASCADE",
       onDelete: "CASCADE",
+      primaryKey: true,
     },
   },
   { sequelize: db, tableName: "cart", timestamps: false }

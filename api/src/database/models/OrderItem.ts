@@ -30,6 +30,7 @@ OrderItem.init(
       },
       onUpdate: "CASCADE",
       onDelete: "CASCADE",
+      primaryKey: true,
     },
     product_id: {
       type: sequelize.INTEGER,
@@ -40,6 +41,7 @@ OrderItem.init(
       },
       onUpdate: "CASCADE",
       onDelete: "CASCADE",
+      primaryKey: true,
     },
     quantity: {
       type: sequelize.INTEGER,
