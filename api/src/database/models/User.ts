@@ -2,9 +2,14 @@ import { Model } from "sequelize";
 import db from ".";
 import sequelize from "sequelize";
 
+export enum UserRoles {
+  ADMIN = "ADMIN",
+  CUSTOMER = "COSTOMER",
+}
+
 class User extends Model {
   declare id: number;
-  declare role: string;
+  declare role: UserRoles;
   declare name: string;
   declare email: string;
   declare password: string;

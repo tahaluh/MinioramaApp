@@ -2,10 +2,19 @@ import { Model } from "sequelize";
 import db from ".";
 import sequelize from "sequelize";
 
+export enum OrderStatus {
+  PENDING = "PENDING",
+  PROCESSING = "PROCESSING",
+  SHIPPED = "SHIPPED",
+  DELIVERED = "DELIVERED",
+  CANCELED = "CANCELED",
+  REFUNDED = "REFUNDED",
+}
+
 class Order extends Model {
   declare id: number;
   declare userId: number;
-  declare status: string;
+  declare status: OrderStatus;
   declare total: number;
 }
 
