@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import ProductService from "../services/product.service";
-import { verifyToken } from "../jwt/jwt";
 
 class ProductController {
   private service = new ProductService();
@@ -32,18 +31,6 @@ class ProductController {
         +productId,
         userId
       );
-      res.status(status).json(message);
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  async cart(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { productId } = req.params;
-      const userId = res.locals.user.id;
-
-      const { status, message } = await this.service.cart(+productId, userId);
       res.status(status).json(message);
     } catch (error) {
       next(error);
