@@ -5,8 +5,6 @@ import sequelize from "sequelize";
 class Category extends Model {
   declare id: number;
   declare name: string;
-  declare created_at: Date;
-  declare updated_at: Date;
 }
 
 Category.init(
@@ -22,7 +20,7 @@ Category.init(
       allowNull: false,
     },
   },
-  { sequelize: db, tableName: "category", timestamps: false }
+  { sequelize: db, tableName: "category", timestamps: false, underscored: true }
 );
 
 export default Category;

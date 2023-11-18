@@ -7,9 +7,7 @@ class Product extends Model {
   declare name: string;
   declare description: string;
   declare price: number;
-  declare image_url: string;
-  declare created_at: Date;
-  declare updated_at: Date;
+  declare imageUrl: string;
 }
 
 Product.init(
@@ -32,12 +30,12 @@ Product.init(
       type: sequelize.STRING,
       allowNull: false,
     },
-    image_url: {
+    imageUrl: {
       type: sequelize.STRING,
       allowNull: true,
     },
   },
-  { sequelize: db, tableName: "product", timestamps: true }
+  { sequelize: db, tableName: "product", timestamps: true, underscored: true }
 );
 
 export default Product;

@@ -6,15 +6,13 @@ import Category from "./Category";
 
 class ProductCategory extends Model {
   declare id: number;
-  declare product_id: number;
-  declare category_id: number;
-  declare created_at: Date;
-  declare updated_at: Date;
+  declare productId: number;
+  declare categoryId: number;
 }
 
 ProductCategory.init(
   {
-    product_id: {
+    productId: {
       type: sequelize.INTEGER,
       allowNull: false,
       references: {
@@ -24,7 +22,7 @@ ProductCategory.init(
       onUpdate: "CASCADE",
       onDelete: "CASCADE",
     },
-    category_id: {
+    categoryId: {
       type: sequelize.INTEGER,
       allowNull: false,
       references: {
@@ -35,19 +33,24 @@ ProductCategory.init(
       onDelete: "CASCADE",
     },
   },
-  { sequelize: db, tableName: "product_category", timestamps: false }
+  {
+    sequelize: db,
+    tableName: "product_category",
+    timestamps: false,
+    underscored: true,
+  }
 );
 
 Product.belongsToMany(Category, {
-  foreignKey: "product_id",
-  otherKey: "category_id",
+  foreignKey: "productId",
+  otherKey: "categoryId",
   as: "categories",
   through: ProductCategory,
 });
 
 Category.belongsToMany(Product, {
-  foreignKey: "category_id",
-  otherKey: "product_id",
+  foreignKey: "categoryId",
+  otherKey: "productId",
   as: "products",
   through: ProductCategory,
 });
