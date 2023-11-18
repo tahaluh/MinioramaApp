@@ -40,20 +40,8 @@ Wishlist.init(
       onUpdate: "CASCADE",
       onDelete: "CASCADE",
     },
-    created_at: {
-      type: sequelize.DATE,
-      allowNull: false,
-      defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
-    },
-    updated_at: {
-      type: sequelize.DATE,
-      allowNull: false,
-      defaultValue: sequelize.literal(
-        "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"
-      ),
-    },
   },
-  { sequelize: db, tableName: "wishlist" }
+  { sequelize: db, tableName: "wishlist", timestamps: false }
 );
 
 Product.belongsToMany(User, {

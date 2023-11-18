@@ -45,20 +45,8 @@ Cart.init(
       onUpdate: "CASCADE",
       onDelete: "CASCADE",
     },
-    created_at: {
-      type: sequelize.DATE,
-      allowNull: false,
-      defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
-    },
-    updated_at: {
-      type: sequelize.DATE,
-      allowNull: false,
-      defaultValue: sequelize.literal(
-        "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"
-      ),
-    },
   },
-  { sequelize: db, tableName: "cart" }
+  { sequelize: db, tableName: "cart", timestamps: false }
 );
 
 User.hasMany(Cart, {

@@ -6,7 +6,7 @@ class User extends Model {
   declare id: number;
   declare name: string;
   declare email: string;
-  declare password_hash: string;
+  declare password: string;
   declare created_at: Date;
   declare updated_at: Date;
 }
@@ -28,24 +28,14 @@ User.init(
       allowNull: false,
       unique: true,
     },
-    password_hash: {
+    password: {
       type: sequelize.STRING,
       allowNull: false,
     },
-    created_at: {
-      type: sequelize.DATE,
-      allowNull: false,
-      defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
-    },
-    updated_at: {
-      type: sequelize.DATE,
-      allowNull: false,
-      defaultValue: sequelize.literal(
-        "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"
-      ),
-    },
+    createdAt: "created_at",
+    updatedAt: "updated_at",
   },
-  { sequelize: db, tableName: "user" }
+  { sequelize: db, tableName: "user", timestamps: true, underscored: true }
 );
 
 export default User;

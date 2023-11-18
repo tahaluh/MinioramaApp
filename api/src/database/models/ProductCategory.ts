@@ -35,7 +35,7 @@ ProductCategory.init(
       onDelete: "CASCADE",
     },
   },
-  { sequelize: db, tableName: "product_category" }
+  { sequelize: db, tableName: "product_category", timestamps: false }
 );
 
 Product.belongsToMany(Category, {

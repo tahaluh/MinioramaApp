@@ -36,20 +36,8 @@ Product.init(
       type: sequelize.STRING,
       allowNull: true,
     },
-    created_at: {
-      type: sequelize.DATE,
-      allowNull: false,
-      defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
-    },
-    updated_at: {
-      type: sequelize.DATE,
-      allowNull: false,
-      defaultValue: sequelize.literal(
-        "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"
-      ),
-    },
   },
-  { sequelize: db, tableName: "product" }
+  { sequelize: db, tableName: "product", timestamps: true }
 );
 
 export default Product;
