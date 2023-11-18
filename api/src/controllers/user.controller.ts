@@ -30,6 +30,29 @@ class UserController {
       next(error);
     }
   }
+
+  async update(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = res.locals.user.id;
+      const { status, message } = await this.service.update(req.body, userId);
+      res.status(status).json(message);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async changePassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = res.locals.user.id;
+      const { status, message } = await this.service.changePassword(
+        req.body,
+        userId
+      );
+      res.status(status).json(message);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default UserController;

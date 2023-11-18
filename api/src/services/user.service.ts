@@ -53,6 +53,53 @@ class UserService {
 
     return resp(201, createdUser);
   }
+
+  async update(user: IUser, userId: number) {
+    const { error } = schema.updateUser.validate(user);
+    if (error) return respM(400, error.message);
+
+    const findUser = await this.model.findOne({
+      where: {
+        id: userId,
+      },
+    });
+    if (!findUser) return respM(404, "User not found");
+
+    await findUser.update(user);
+
+    return resp(204, "");
+  }
+
+  async changePassword(
+    body: {
+      oldPassword: string;
+      newPassword: string;
+    },
+    userId: number
+  ) {
+    const { error } = schema.userChangePassword.validate(body);
+    if (error) return respM(400, error.message);
+
+    const { oldPassword, newPassword } = body;
+
+    const hashOldPassword = md5(oldPassword);
+
+    const user = await this.model.findOne({
+      where: {
+        id: userId,
+      },
+    });
+    if (hashOldPassword !== user?.password)
+      return respM(400, "Old password is incorrect");
+
+    const hashPassword = md5(newPassword);
+
+    await user.update({
+      password: hashPassword,
+    });
+
+    return resp(204, "");
+  }
 }
 
 export default UserService;
