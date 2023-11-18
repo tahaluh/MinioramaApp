@@ -22,6 +22,29 @@ class ProductController {
     }
   }
 
+  async update(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { productId } = req.params;
+      const { status, message } = await this.service.update(
+        req.body,
+        productId
+      );
+      res.status(status).json(message);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async delete(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { productId } = req.params;
+      const { status, message } = await this.service.delete(productId);
+      res.status(status).json(message);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async wishlist(req: Request, res: Response, next: NextFunction) {
     try {
       const { productId } = req.params;

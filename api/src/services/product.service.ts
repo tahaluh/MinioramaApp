@@ -8,6 +8,7 @@ import schema from "./validations/schema";
 import Wishlist from "../database/models/Wishlist";
 import Cart from "../database/models/Cart";
 import User from "../database/models/User";
+import Order from "../database/models/Order";
 
 ProductCategory.associations;
 
@@ -28,7 +29,7 @@ class ProductService {
   }
 
   async create(product: IProduct) {
-    const { error } = schema.product.validate(product);
+    const { error } = schema.createProduct.validate(product);
     if (error) return resp(400, error.message);
 
     const categories = await Promise.all(
@@ -50,7 +51,48 @@ class ProductService {
 
     await ProductCategory.bulkCreate(productCategory);
 
-    return resp(201, createdProduct);
+    return resp(201, "");
+  }
+
+  async update(product: IProduct, productId: string) {
+    const { error } = schema.updateProduct.validate(product);
+    if (error) return resp(400, error.message);
+
+    const findProduct = await this.model.findByPk(productId);
+    if (!findProduct) return respM(404, "Product not found");
+
+    const categories = await Promise.all(
+      product.categories!.map(async (id) => {
+        return await Category.findByPk(id);
+      })
+    );
+    if (categories.some((e) => !e)) return resp(400, "Category not found");
+
+    await findProduct.update(product);
+
+    await ProductCategory.destroy({ where: { productId } });
+
+    const productCategory = product.categories!.map((id) => ({
+      productId: productId,
+      categoryId: id,
+    }));
+
+    await ProductCategory.bulkCreate(productCategory);
+
+    return resp(200, findProduct);
+  }
+
+  async delete(productId: string) {
+    const findProduct = (await this.model.findByPk(productId, {
+      include: [{ model: Order, as: "orders" }],
+    })) as Product & { orders: Order[] };
+    if (!findProduct) return respM(404, "Product not found");
+    if (findProduct.orders!.length > 0)
+      return respM(400, "Product already in use");
+
+    await findProduct.destroy();
+
+    return resp(204, "");
   }
 
   async wishlist(productId: number, userId: number) {
@@ -68,61 +110,6 @@ class ProductService {
 
     await Wishlist.create({ productId, userId });
     return resp(201, "");
-  }
-
-  async getCart(userId: number) {
-    const findUser = (await User.findByPk(userId, {
-      include: [{ model: Product, as: "cartProducts" }],
-    })) as User & { cartProducts: (Product & { Cart: Cart })[] };
-
-    if (!findUser) return respM(404, "User not found");
-
-    return resp(200, findUser.cartProducts);
-  }
-
-  async cart(productId: number, userId: number) {
-    const findProduct = await this.model.findByPk(productId);
-    if (!findProduct) return respM(404, "Product not found");
-
-    const cart = await Cart.findOne({
-      where: { productId, userId },
-    });
-
-    if (cart) {
-      await cart.update({ quantity: cart.quantity + 1 });
-      return resp(204, "");
-    }
-
-    await Cart.create({ productId, userId, quantity: 1 });
-    return resp(201, "");
-  }
-
-  async updateCart(productId: number, userId: number, quantity: number) {
-    const findProduct = await this.model.findByPk(productId);
-    if (!findProduct) return respM(404, "Product not found");
-
-    const cart = await Cart.findOne({
-      where: { productId, userId },
-    });
-    if (!cart) return respM(404, "Product not found in cart");
-
-    if (quantity < 1) return respM(400, "Quantity must be greater than 0");
-
-    await cart.update({ quantity });
-    return resp(204, "");
-  }
-
-  async deleteCart(productId: number, userId: number) {
-    const findProduct = await this.model.findByPk(productId);
-    if (!findProduct) return respM(404, "Product not found");
-
-    const cart = await Cart.findOne({
-      where: { productId },
-    });
-    if (!cart) return respM(404, "Product not found in cart");
-
-    await cart.destroy();
-    return resp(204, "");
   }
 }
 
