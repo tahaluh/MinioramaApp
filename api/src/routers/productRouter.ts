@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ProductController from "../controller/product.controller";
+import ProductController from "../controllers/product.controller";
 import { verifyToken } from "../jwt/jwt";
 import { adminGuard } from "../middlewares/adminGuard";
 

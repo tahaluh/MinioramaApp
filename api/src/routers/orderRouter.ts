@@ -1,5 +1,5 @@
 import { Router } from "express";
-import OrderController from "../controller/order.controller";
+import OrderController from "../controllers/order.controller";
 import { verifyToken } from "../jwt/jwt";
 
 const control = new OrderController();

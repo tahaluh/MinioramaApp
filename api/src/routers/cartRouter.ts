@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { verifyToken } from "../jwt/jwt";
-import CartController from "../controller/cart.controller";
+import CartController from "../controllers/cart.controller";
 
 const control = new CartController();
 
