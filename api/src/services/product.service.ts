@@ -5,6 +5,8 @@ import { resp } from "../utils/resp";
 import IProduct from "../interfaces/IProduct";
 import ProductCategory from "../database/models/ProductCategory";
 import schema from "./validations/schema";
+import Wishlist from "../database/models/Wishlist";
+import User from "../database/models/User";
 
 ProductCategory.associations;
 
@@ -48,6 +50,23 @@ class ProductService {
     await ProductCategory.bulkCreate(productCategory);
 
     return resp(201, createdProduct);
+  }
+
+  async wishlist(productId: number, userId: number) {
+    const findProduct = await Product.findByPk(productId);
+    if (!findProduct) return resp(404, "Product not found");
+
+    const wishlist = await Wishlist.findOne({
+      where: { productId, userId },
+    });
+
+    if (wishlist) {
+      await wishlist.destroy();
+      return resp(204, "");
+    }
+
+    await Wishlist.create({ productId, userId });
+    return resp(201, "");
   }
 }
 

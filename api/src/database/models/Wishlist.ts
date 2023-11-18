@@ -6,10 +6,8 @@ import User from "./User";
 
 class Wishlist extends Model {
   declare id: number;
-  declare product_id: number;
-  declare user_id: number;
-  declare created_at: Date;
-  declare updated_at: Date;
+  declare productId: number;
+  declare userId: number;
 }
 
 Wishlist.init(
@@ -20,7 +18,7 @@ Wishlist.init(
       autoIncrement: true,
       allowNull: false,
     },
-    product_id: {
+    productId: {
       type: sequelize.INTEGER,
       allowNull: false,
       references: {
@@ -31,7 +29,7 @@ Wishlist.init(
       onDelete: "CASCADE",
       primaryKey: true,
     },
-    user_id: {
+    userId: {
       type: sequelize.INTEGER,
       allowNull: false,
       references: {
@@ -43,19 +41,19 @@ Wishlist.init(
       primaryKey: true,
     },
   },
-  { sequelize: db, tableName: "wishlist", timestamps: false }
+  { sequelize: db, tableName: "wishlist", timestamps: false, underscored: true }
 );
 
 Product.belongsToMany(User, {
-  foreignKey: "product_id",
-  otherKey: "user_id",
+  foreignKey: "productId",
+  otherKey: "userId",
   as: "users",
   through: Wishlist,
 });
 
 User.belongsToMany(Product, {
-  foreignKey: "user_id",
-  otherKey: "product_id",
+  foreignKey: "userId",
+  otherKey: "productId",
   as: "products",
   through: Wishlist,
 });
