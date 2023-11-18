@@ -6,11 +6,9 @@ import Product from "./Product";
 
 class Cart extends Model {
   declare id: number;
-  declare product_id: number;
+  declare productId: number;
   declare quantity: number;
-  declare user_id: number;
-  declare created_at: Date;
-  declare updated_at: Date;
+  declare userId: number;
 }
 
 Cart.init(
@@ -21,7 +19,7 @@ Cart.init(
       autoIncrement: true,
       allowNull: false,
     },
-    product_id: {
+    productId: {
       type: sequelize.INTEGER,
       allowNull: false,
       references: {
@@ -36,7 +34,7 @@ Cart.init(
       type: sequelize.INTEGER,
       allowNull: false,
     },
-    user_id: {
+    userId: {
       type: sequelize.INTEGER,
       allowNull: false,
       references: {
@@ -48,27 +46,21 @@ Cart.init(
       primaryKey: true,
     },
   },
-  { sequelize: db, tableName: "cart", timestamps: false }
+  { sequelize: db, tableName: "cart", timestamps: false, underscored: true }
 );
 
-User.hasMany(Cart, {
-  foreignKey: "user_id",
-  as: "carts",
+Product.belongsToMany(User, {
+  foreignKey: "productId",
+  otherKey: "userId",
+  as: "cartUsers",
+  through: Cart,
 });
 
-Cart.belongsTo(User, {
-  foreignKey: "user_id",
-  as: "user",
-});
-
-Product.hasMany(Cart, {
-  foreignKey: "product_id",
-  as: "product",
-});
-
-Cart.belongsTo(Product, {
-  foreignKey: "product_id",
-  as: "product",
+User.belongsToMany(Product, {
+  foreignKey: "userId",
+  otherKey: "productId",
+  as: "cartProducts",
+  through: Cart,
 });
 
 export default Cart;

@@ -13,5 +13,6 @@ productRouter.patch(
   verifyToken,
   control.wishlist.bind(control)
 );
+productRouter.patch("/cart/:productId", verifyToken, control.cart.bind(control));
 
 export default productRouter;

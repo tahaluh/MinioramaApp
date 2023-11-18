@@ -1,12 +1,12 @@
 import { ModelStatic } from "sequelize";
 import Product from "../database/models/Product";
 import Category from "../database/models/Category";
-import { resp } from "../utils/resp";
+import { resp, respM } from "../utils/resp";
 import IProduct from "../interfaces/IProduct";
 import ProductCategory from "../database/models/ProductCategory";
 import schema from "./validations/schema";
 import Wishlist from "../database/models/Wishlist";
-import User from "../database/models/User";
+import Cart from "../database/models/Cart";
 
 ProductCategory.associations;
 
@@ -54,7 +54,7 @@ class ProductService {
 
   async wishlist(productId: number, userId: number) {
     const findProduct = await Product.findByPk(productId);
-    if (!findProduct) return resp(404, "Product not found");
+    if (!findProduct) return respM(404, "Product not found");
 
     const wishlist = await Wishlist.findOne({
       where: { productId, userId },
@@ -66,6 +66,23 @@ class ProductService {
     }
 
     await Wishlist.create({ productId, userId });
+    return resp(201, "");
+  }
+
+  async cart(productId: number, userId: number) {
+    const findProduct = await Product.findByPk(productId);
+    if (!findProduct) return respM(404, "Product not found");
+
+    const cart = await Cart.findOne({
+      where: { productId, userId },
+    });
+
+    if (cart) {
+      await cart.update({ quantity: cart.quantity + 1 });
+      return resp(204, "");
+    }
+
+    await Cart.create({ productId, userId, quantity: 1 });
     return resp(201, "");
   }
 }

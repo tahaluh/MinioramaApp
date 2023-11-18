@@ -4,11 +4,9 @@ import sequelize from "sequelize";
 
 class Order extends Model {
   declare id: number;
-  declare user_id: number;
+  declare userId: number;
   declare status: string;
   declare total: number;
-  declare created_at: Date;
-  declare updated_at: Date;
 }
 
 Order.init(
@@ -19,7 +17,7 @@ Order.init(
       autoIncrement: true,
       allowNull: false,
     },
-    user_id: {
+    userId: {
       type: sequelize.INTEGER,
       allowNull: false,
       references: {
@@ -39,8 +37,10 @@ Order.init(
       allowNull: false,
       defaultValue: 0,
     },
+    createdAt: "created_at",
+    updatedAt: "updated_at",
   },
-  { sequelize: db, tableName: "order", timestamps: true }
+  { sequelize: db, tableName: "order", timestamps: true, underscored: true }
 );
 
 export default Order;

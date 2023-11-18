@@ -28,8 +28,8 @@ class UserService {
 
     if (!user) return respM(404, "User not found");
 
-    const { id, email } = user;
-    const token = sign({ id, email });
+    const { id, email, role } = user;
+    const token = sign({ id, email, role });
     return resp(200, { id, email, token });
   }
 

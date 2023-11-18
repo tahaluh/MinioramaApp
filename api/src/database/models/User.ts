@@ -4,11 +4,10 @@ import sequelize from "sequelize";
 
 class User extends Model {
   declare id: number;
+  declare role: string;
   declare name: string;
   declare email: string;
   declare password: string;
-  declare created_at: Date;
-  declare updated_at: Date;
 }
 
 User.init(
@@ -18,6 +17,11 @@ User.init(
       primaryKey: true,
       autoIncrement: true,
       allowNull: false,
+    },
+    role: {
+      type: sequelize.ENUM("ADMIN", "CUSTOMER"),
+      allowNull: false,
+      defaultValue: "CUSTOMER",
     },
     name: {
       type: sequelize.STRING,

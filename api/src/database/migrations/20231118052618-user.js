@@ -11,6 +11,11 @@ module.exports = {
         autoIncrement: true,
         allowNull: false,
       },
+      role: {
+        type: DataTypes.ENUM("ADMIN", "CUSTOMER"),
+        allowNull: false,
+        defaultValue: "CUSTOMER",
+      },
       name: {
         type: Sequelize.STRING,
         allowNull: false,

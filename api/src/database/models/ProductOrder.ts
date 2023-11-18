@@ -2,18 +2,17 @@ import { Model } from "sequelize";
 import db from ".";
 import sequelize from "sequelize";
 import Order from "./Order";
+import Product from "./Product";
 
-class OrderItem extends Model {
+class ProductOrder extends Model {
   declare id: number;
-  declare order_id: number;
-  declare product_id: number;
+  declare orderId: number;
+  declare productId: number;
   declare quantity: number;
   declare price: number;
-  declare created_at: Date;
-  declare updated_at: Date;
 }
 
-OrderItem.init(
+ProductOrder.init(
   {
     id: {
       type: sequelize.INTEGER,
@@ -21,7 +20,7 @@ OrderItem.init(
       autoIncrement: true,
       allowNull: false,
     },
-    order_id: {
+    orderId: {
       type: sequelize.INTEGER,
       allowNull: false,
       references: {
@@ -32,7 +31,7 @@ OrderItem.init(
       onDelete: "CASCADE",
       primaryKey: true,
     },
-    product_id: {
+    productId: {
       type: sequelize.INTEGER,
       allowNull: false,
       references: {
@@ -52,17 +51,26 @@ OrderItem.init(
       allowNull: false,
     },
   },
-  { sequelize: db, tableName: "order_item", timestamps: false }
+  {
+    sequelize: db,
+    tableName: "order_item",
+    timestamps: false,
+    underscored: true,
+  }
 );
 
-OrderItem.belongsTo(Order, {
-  foreignKey: "order_id",
-  as: "order",
+Product.belongsToMany(Order, {
+  foreignKey: "productId",
+  otherKey: "orderId",
+  as: "orders",
+  through: ProductOrder,
 });
 
-Order.hasMany(OrderItem, {
-  foreignKey: "order_id",
-  as: "order_items",
+Order.belongsToMany(Product, {
+  foreignKey: "orderId",
+  otherKey: "productId",
+  as: "products",
+  through: ProductOrder,
 });
 
-export default OrderItem;
+export default ProductOrder;
