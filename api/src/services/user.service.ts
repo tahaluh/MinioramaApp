@@ -10,7 +10,9 @@ class UserService {
   private model: ModelStatic<User> = User;
 
   async get() {
-    const users = await this.model.findAll();
+    const users = await this.model.findAll({
+      attributes: { exclude: ["password"] },
+    });
     return resp(200, users);
   }
 
@@ -34,6 +36,14 @@ class UserService {
   async create(user: IUser) {
     const { error } = schema.user.validate(user);
     if (error) return respM(400, error.message);
+
+    const findUser = await this.model.findOne({
+      where: {
+        email: user.email,
+      },
+    });
+
+    if (findUser) return respM(400, "User with this email already exists");
 
     const hashPassword = md5(user.password);
     const createdUser = await this.model.create({
