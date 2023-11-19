@@ -82,7 +82,7 @@ class UserService {
     userId: number
   ) {
     const { error } = changepasswordValidation.validate(body);
-    if (error) return respM(400, error.message);
+    if (error) return resp(400, error.message);
 
     const { oldPassword, newPassword } = body;
 
@@ -94,7 +94,9 @@ class UserService {
       },
     });
     if (hashOldPassword !== user?.password)
-      return respM(400, "Old password is incorrect");
+      return resp(400, "Old password is incorrect");
+
+    console.log("passou ue");
 
     const hashPassword = md5(newPassword);
 
