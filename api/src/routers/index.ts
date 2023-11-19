@@ -1,9 +1,9 @@
 import { Router } from "express";
-import userRouter from "./userRouter";
-import productRouter from "./productRouter";
-import orderRouter from "./orderRouter";
-import cartRouter from "./cartRouter";
-import categoryRouter from "./categoryRouter";
+import userRouter from "../entities/user/userRouter";
+import productRouter from "../entities/product/productRouter";
+import orderRouter from "../entities/order/orderRouter";
+import cartRouter from "../entities/cart/cartRouter";
+import categoryRouter from "../entities/category/categoryRouter";
 
 const router = Router();
 

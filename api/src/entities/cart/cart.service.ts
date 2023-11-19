@@ -1,9 +1,9 @@
 import { ModelStatic } from "sequelize";
-import Product from "../database/models/Product";
-import { resp, respM } from "../utils/resp";
-import ProductCategory from "../database/models/ProductCategory";
-import Cart from "../database/models/Cart";
-import User from "../database/models/User";
+import Product from "../../database/models/Product";
+import { resp, respM } from "../../utils/resp";
+import ProductCategory from "../../database/models/ProductCategory";
+import Cart from "../../database/models/Cart";
+import User from "../../database/models/User";
 
 ProductCategory.associations;
 

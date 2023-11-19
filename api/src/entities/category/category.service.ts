@@ -1,7 +1,7 @@
-import Category from "../database/models/Category";
+import Category from "../../database/models/Category";
 import { ModelStatic } from "sequelize";
-import { resp, respM } from "../utils/resp";
-import Product from "../database/models/Product";
+import { resp, respM } from "../../utils/resp";
+import Product from "../../database/models/Product";
 
 class CategoryService {
   private model: ModelStatic<Category> = Category;

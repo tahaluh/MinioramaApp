@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import CartService from "../services/cart.service";
+import CartService from "./cart.service";
 
 class CartController {
   private service = new CartService();

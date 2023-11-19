@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { verifyToken } from "../jwt/jwt";
-import CategoryController from "../controllers/category.controller";
-import { adminGuard } from "../middlewares/adminGuard";
+import { verifyToken } from "../../jwt/jwt";
+import CategoryController from "./category.controller";
+import { adminGuard } from "../../middlewares/adminGuard";
 
 const control = new CategoryController();
 

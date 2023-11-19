@@ -1,7 +1,7 @@
 import { Router } from "express";
-import ProductController from "../controllers/product.controller";
-import { verifyToken } from "../jwt/jwt";
-import { adminGuard } from "../middlewares/adminGuard";
+import ProductController from "./product.controller";
+import { verifyToken } from "../../jwt/jwt";
+import { adminGuard } from "../../middlewares/adminGuard";
 
 const control = new ProductController();
 

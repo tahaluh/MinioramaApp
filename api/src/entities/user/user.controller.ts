@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import UserService from "../services/user.service";
+import UserService from "./user.service";
 
 class UserController {
   private service = new UserService();

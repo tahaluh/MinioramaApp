@@ -1,10 +1,14 @@
 import { ModelStatic } from "sequelize";
-import User from "../database/models/User";
-import { resp, respM } from "../utils/resp";
+import User from "../../database/models/User";
+import { resp, respM } from "../../utils/resp";
 import md5 from "md5";
-import { sign } from "../jwt/jwt";
-import IUser from "../interfaces/IUser";
-import schema from "./validations/schema";
+import { sign } from "../../jwt/jwt";
+import schema from "./validations/createUser";
+import CreateUserDTO from "./dto/createUserDTO";
+import UpdateUserDTO from "./dto/UpdateUserDTO";
+import createUserValidation from "./validations/createUser";
+import updateUserValidation from "./validations/updateUser";
+import changepasswordValidation from "./validations/changepassword";
 
 class UserService {
   private model: ModelStatic<User> = User;
@@ -26,46 +30,46 @@ class UserService {
       },
     });
 
-    if (!user) return respM(404, "User not found");
+    if (!user) return resp(404, "User not found");
 
     const { id, email, role } = user;
     const token = sign({ id, email, role });
     return resp(200, { id, email, token });
   }
 
-  async create(user: IUser) {
-    const { error } = schema.user.validate(user);
-    if (error) return respM(400, error.message);
+  async create(data: CreateUserDTO) {
+    const { error } = createUserValidation.validate(data);
+    if (error) return resp(400, error.message);
 
     const findUser = await this.model.findOne({
       where: {
-        email: user.email,
+        email: data.email,
       },
     });
 
-    if (findUser) return respM(400, "User with this email already exists");
+    if (findUser) return resp(400, "User with this email already exists");
 
-    const hashPassword = md5(user.password);
+    const hashPassword = md5(data.password);
     const createdUser = await this.model.create({
-      ...user,
+      ...data,
       password: hashPassword,
     });
 
     return resp(201, createdUser);
   }
 
-  async update(user: IUser, userId: number) {
-    const { error } = schema.updateUser.validate(user);
-    if (error) return respM(400, error.message);
+  async update(data: UpdateUserDTO, userId: number) {
+    const { error } = updateUserValidation.validate(data);
+    if (error) return resp(400, error.message);
 
     const findUser = await this.model.findOne({
       where: {
         id: userId,
       },
     });
-    if (!findUser) return respM(404, "User not found");
+    if (!findUser) return resp(404, "User not found");
 
-    await findUser.update(user);
+    await findUser.update(data);
 
     return resp(204, "");
   }
@@ -77,7 +81,7 @@ class UserService {
     },
     userId: number
   ) {
-    const { error } = schema.userChangePassword.validate(body);
+    const { error } = changepasswordValidation.validate(body);
     if (error) return respM(400, error.message);
 
     const { oldPassword, newPassword } = body;

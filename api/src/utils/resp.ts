@@ -1,6 +1,6 @@
-const resp = (s: number, m: unknown) => ({ status: s, message: m });
+const resp = (s: number, m: any) => ({ status: s, message: m });
 
-const respM = (s: number, m: unknown) => ({
+const respM = (s: number, m: any) => ({
   status: s,
   message: { message: m },
 });

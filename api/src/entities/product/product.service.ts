@@ -1,14 +1,15 @@
 import { ModelStatic } from "sequelize";
-import Product from "../database/models/Product";
-import Category from "../database/models/Category";
-import { resp, respM } from "../utils/resp";
-import IProduct from "../interfaces/IProduct";
-import ProductCategory from "../database/models/ProductCategory";
-import schema from "./validations/schema";
-import Wishlist from "../database/models/Wishlist";
-import Cart from "../database/models/Cart";
-import User from "../database/models/User";
-import Order from "../database/models/Order";
+import Product from "../../database/models/Product";
+import Category from "../../database/models/Category";
+import { resp, respM } from "../../utils/resp";
+import ProductCategory from "../../database/models/ProductCategory";
+import schema from "../user/validations/createUser";
+import Wishlist from "../../database/models/Wishlist";
+import Order from "../../database/models/Order";
+import CreateProductDTO from "./dto/createProductDTO";
+import UpdateProductDTO from "./dto/updateProductDTO";
+import updateProductValidation from "./validations/updateProduct";
+import createProductValidation from "./validations/createProduct";
 
 ProductCategory.associations;
 
@@ -28,12 +29,12 @@ class ProductService {
     return resp(200, products);
   }
 
-  async create(product: IProduct) {
-    const { error } = schema.createProduct.validate(product);
+  async create(data: CreateProductDTO) {
+    const { error } = createProductValidation.validate(data);
     if (error) return resp(400, error.message);
 
     const categories = await Promise.all(
-      product.categories!.map(async (id) => {
+      data.categories!.map(async (id) => {
         return await Category.findByPk(id);
       })
     );
@@ -41,10 +42,10 @@ class ProductService {
     if (categories.some((e) => !e)) return resp(404, "Category not found");
 
     const createdProduct = await this.model.create({
-      ...product,
+      ...data,
     });
 
-    const productCategory = product.categories!.map((id) => ({
+    const productCategory = data.categories!.map((id) => ({
       productId: createdProduct.id,
       categoryId: id,
     }));
@@ -54,8 +55,8 @@ class ProductService {
     return resp(201, "");
   }
 
-  async update(product: IProduct, productId: string) {
-    const { error } = schema.updateProduct.validate(product);
+  async update(product: UpdateProductDTO, productId: string) {
+    const { error } = updateProductValidation.validate(product);
     if (error) return resp(400, error.message);
 
     const findProduct = await this.model.findByPk(productId);
