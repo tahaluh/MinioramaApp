@@ -30,6 +30,17 @@ class OrderController {
       next(error);
     }
   }
+
+  async cancel(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { orderId } = req.params;
+      const userId = res.locals.user.id;
+      const { status, message } = await this.service.cancel(+orderId, userId);
+      res.status(status).json(message);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default OrderController;
