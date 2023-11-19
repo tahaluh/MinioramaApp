@@ -37,7 +37,14 @@ Order.init(
       onDelete: "CASCADE",
     },
     status: {
-      type: sequelize.ENUM("pending", "success", "failed"),
+      type: sequelize.ENUM(
+        "PENDING",
+        "PROCESSING",
+        "SHIPPED",
+        "DELIVERED",
+        "CANCELED",
+        "REFUNDED"
+      ),
       allowNull: false,
       defaultValue: "pending",
     },

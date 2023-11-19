@@ -38,7 +38,7 @@ class ProductService {
       })
     );
 
-    if (categories.some((e) => !e)) return resp(400, "Category not found");
+    if (categories.some((e) => !e)) return resp(404, "Category not found");
 
     const createdProduct = await this.model.create({
       ...product,
@@ -66,7 +66,7 @@ class ProductService {
         return await Category.findByPk(id);
       })
     );
-    if (categories.some((e) => !e)) return resp(400, "Category not found");
+    if (categories.some((e) => !e)) return resp(404, "Category not found");
 
     await findProduct.update(product);
 
