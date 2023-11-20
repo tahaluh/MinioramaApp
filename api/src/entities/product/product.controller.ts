@@ -45,6 +45,16 @@ class ProductController {
     }
   }
 
+  async getWishlist(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = res.locals.user.id;
+      const { status, message } = await this.service.getWishlist(userId);
+      res.status(status).json(message);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async wishlist(req: Request, res: Response, next: NextFunction) {
     try {
       const { productId } = req.params;

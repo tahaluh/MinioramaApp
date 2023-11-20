@@ -9,6 +9,7 @@ import CreateProductDTO from "./dto/createProductDTO";
 import UpdateProductDTO from "./dto/updateProductDTO";
 import updateProductValidation from "./validations/updateProduct";
 import createProductValidation from "./validations/createProduct";
+import User from "../../database/models/User";
 
 ProductCategory.associations;
 
@@ -93,6 +94,16 @@ class ProductService {
     await findProduct.destroy();
 
     return resp(204, "");
+  }
+
+  async getWishlist(userId: number) {
+    const findUser = (await User.findByPk(userId, {
+      include: [{ model: Product, as: "products" }],
+    })) as User & { products: (Product & { Wishlist: Wishlist })[] };
+
+    if (!findUser) return resp(404, "User not found");
+
+    return resp(200, findUser.products);
   }
 
   async wishlist(productId: number, userId: number) {

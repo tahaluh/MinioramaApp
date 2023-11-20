@@ -27,10 +27,10 @@ productRouter.delete(
   control.delete.bind(control)
 );
 
+productRouter.get("/wishlist", verifyToken, control.getWishlist.bind(control));
 productRouter.patch(
   "/wishlist/:productId",
   verifyToken,
-  adminGuard,
   control.wishlist.bind(control)
 );
 
