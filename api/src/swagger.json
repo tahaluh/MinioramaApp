@@ -15,6 +15,94 @@
     }
   ],
   "paths": {
+    "/user": {
+      "post": {
+        "summary": "Criar Contas",
+        "tags": ["Auth"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "login": {
+                  "value": {
+                    "email": "email@gmail.com",
+                    "name": "Jose da silva",
+                    "password": "123456"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Validation Error"
+          },
+          "201": {
+            "description": "Created"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Atualizar Conta",
+        "tags": ["Auth"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "email": "email@gmail.com",
+                    "name": "Jose da silva"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Validation Error"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "200": {
+            "description": "Updated"
+          }
+        }
+      }
+    },
     "/login": {
       "post": {
         "summary": "Login",
@@ -71,6 +159,53 @@
           },
           "404": {
             "description": "User not found"
+          }
+        }
+      }
+    },
+    "/change-password": {
+      "patch": {
+        "summary": "Alterar senha",
+        "tags": ["Auth"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "oldPassword": {
+                    "type": "string"
+                  },
+                  "newPassword": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "changePassword": {
+                  "value": {
+                    "oldPassword": "senhaAntiga123",
+                    "newPassword": "senhaNova123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "User not found"
+          },
+          "400": {
+            "description": "Validation Error"
+          },
+          "200": {
+            "description": "Updated"
           }
         }
       }

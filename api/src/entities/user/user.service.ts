@@ -43,9 +43,10 @@ class UserService {
 
     if (!user) return resp(404, "User not found");
 
-    const { id, email, role } = user;
-    const token = sign({ id, email, role });
-    return resp(200, { id, email, token });
+    const { id, email, name, role } = user;
+    const payload = { id, email, name, role };
+    const token = sign(payload);
+    return resp(200, { ...payload, token });
   }
 
   async create(data: CreateUserDTO) {
@@ -82,7 +83,7 @@ class UserService {
 
     await findUser.update(data);
 
-    return resp(204, "");
+    return resp(200, "Updated");
   }
 
   async changePassword(
@@ -113,7 +114,7 @@ class UserService {
       password: hashPassword,
     });
 
-    return resp(204, "");
+    return resp(200, "Updated");
   }
 }
 
