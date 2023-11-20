@@ -1,9 +1,8 @@
 import { ModelStatic } from "sequelize";
 import Product from "../../database/models/Product";
 import Category from "../../database/models/Category";
-import { resp, respM } from "../../utils/resp";
+import { resp } from "../../utils/resp";
 import ProductCategory from "../../database/models/ProductCategory";
-import schema from "../user/validations/createUser";
 import Wishlist from "../../database/models/Wishlist";
 import Order from "../../database/models/Order";
 import CreateProductDTO from "./dto/createProductDTO";
@@ -60,7 +59,7 @@ class ProductService {
     if (error) return resp(400, error.message);
 
     const findProduct = await this.model.findByPk(productId);
-    if (!findProduct) return respM(404, "Product not found");
+    if (!findProduct) return resp(404, "Product not found");
 
     const categories = await Promise.all(
       product.categories!.map(async (id) => {
@@ -87,9 +86,9 @@ class ProductService {
     const findProduct = (await this.model.findByPk(productId, {
       include: [{ model: Order, as: "orders" }],
     })) as Product & { orders: Order[] };
-    if (!findProduct) return respM(404, "Product not found");
+    if (!findProduct) return resp(404, "Product not found");
     if (findProduct.orders!.length > 0)
-      return respM(400, "Product already in use");
+      return resp(400, "Product already in use");
 
     await findProduct.destroy();
 
@@ -98,7 +97,7 @@ class ProductService {
 
   async wishlist(productId: number, userId: number) {
     const findProduct = await this.model.findByPk(productId);
-    if (!findProduct) return respM(404, "Product not found");
+    if (!findProduct) return resp(404, "Product not found");
 
     const wishlist = await Wishlist.findOne({
       where: { productId, userId },

@@ -1,9 +1,8 @@
 import { ModelStatic } from "sequelize";
 import User from "../../database/models/User";
-import { resp, respM } from "../../utils/resp";
+import { resp } from "../../utils/resp";
 import md5 from "md5";
 import { sign } from "../../jwt/jwt";
-import schema from "./validations/createUser";
 import CreateUserDTO from "./dto/createUserDTO";
 import UpdateUserDTO from "./dto/UpdateUserDTO";
 import createUserValidation from "./validations/createUser";

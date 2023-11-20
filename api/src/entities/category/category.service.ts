@@ -1,6 +1,6 @@
 import Category from "../../database/models/Category";
 import { ModelStatic } from "sequelize";
-import { resp, respM } from "../../utils/resp";
+import { resp } from "../../utils/resp";
 import Product from "../../database/models/Product";
 
 class CategoryService {
@@ -9,13 +9,13 @@ class CategoryService {
   async get() {
     const categories = await this.model.findAll();
 
-    return respM(201, categories);
+    return resp(201, categories);
   }
 
   async create(name: string) {
     const findCategory = await this.model.findOne({ where: { name } });
     if (findCategory)
-      return respM(400, "Category with this name already exists");
+      return resp(400, "Category with this name already exists");
 
     await this.model.create({ name });
 
@@ -24,11 +24,11 @@ class CategoryService {
 
   async update(categoryId: number, name: string) {
     const findOldCategory = await this.model.findByPk(categoryId);
-    if (!findOldCategory) return respM(404, "Category not found");
+    if (!findOldCategory) return resp(404, "Category not found");
 
     const findCategory = await this.model.findOne({ where: { name } });
     if (findCategory && findCategory.id != findOldCategory.id)
-      return respM(400, "Category with this name already exists");
+      return resp(400, "Category with this name already exists");
 
     findOldCategory.update({ name });
 
@@ -39,10 +39,10 @@ class CategoryService {
     const findCategory = (await this.model.findByPk(categoryId, {
       include: [{ model: Product, as: "products" }],
     })) as Category & { products: Product[] };
-    if (!findCategory) return respM(404, "Category not found");
+    if (!findCategory) return resp(404, "Category not found");
 
     if (!(findCategory.products.length === 0))
-      return respM(404, "Category already in use");
+      return resp(404, "Category already in use");
 
     await findCategory.destroy();
 

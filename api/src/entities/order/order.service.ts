@@ -2,7 +2,7 @@ import Order, { OrderStatus } from "../../database/models/Order";
 import { ModelStatic } from "sequelize";
 import ProductOrder from "../../database/models/ProductOrder";
 import Product from "../../database/models/Product";
-import { resp, respM } from "../../utils/resp";
+import { resp } from "../../utils/resp";
 import Cart from "../../database/models/Cart";
 import User, { UserRoles } from "../../database/models/User";
 
@@ -13,7 +13,7 @@ class OrderService {
 
   async get(userIdTk: number, role: UserRoles, userId?: number) {
     if (userId !== userIdTk && role !== UserRoles.ADMIN)
-      return respM(401, "Unauthorized");
+      return resp(401, "Unauthorized");
 
     const orders = await this.model.findAll({
       where: userId ? { userId } : {},
@@ -28,9 +28,9 @@ class OrderService {
       include: [{ model: Product, as: "cartProducts" }],
     })) as User & { cartProducts: (Product & { Cart: Cart })[] };
 
-    if (!findUser) return respM(404, "User not found");
+    if (!findUser) return resp(404, "User not found");
 
-    if (findUser.cartProducts.length === 0) return respM(400, "Cart is empty");
+    if (findUser.cartProducts.length === 0) return resp(400, "Cart is empty");
 
     const totalPrice = findUser.cartProducts.reduce(
       (acc, product) => acc + product.price * product.Cart.quantity,
@@ -58,9 +58,9 @@ class OrderService {
 
   async cancel(orderId: number, userId: number) {
     const findOrder = await this.model.findByPk(orderId);
-    if (!findOrder) return respM(404, "Order not found");
+    if (!findOrder) return resp(404, "Order not found");
 
-    if (userId !== findOrder.userId) return respM(401, "Unauthorized");
+    if (userId !== findOrder.userId) return resp(401, "Unauthorized");
 
     if (
       findOrder.status == OrderStatus.CANCELED ||
@@ -68,7 +68,7 @@ class OrderService {
       findOrder.status == OrderStatus.REFUNDED ||
       findOrder.status == OrderStatus.SHIPPED
     )
-      return respM(400, "Order cannot be canceled");
+      return resp(400, "Order cannot be canceled");
 
     await findOrder.update({ status: OrderStatus.CANCELED });
 
