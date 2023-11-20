@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { UserRoles } from "../database/models/User";
+import UserRoles from "../types/userRoles";
 
 const adminGuard = (req: Request, res: Response, next: NextFunction) => {
   try {

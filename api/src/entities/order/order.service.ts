@@ -1,10 +1,12 @@
-import Order, { OrderStatus } from "../../database/models/Order";
+import Order from "../../database/models/Order";
 import { ModelStatic } from "sequelize";
 import ProductOrder from "../../database/models/ProductOrder";
 import Product from "../../database/models/Product";
 import { resp } from "../../utils/resp";
 import Cart from "../../database/models/Cart";
-import User, { UserRoles } from "../../database/models/User";
+import User from "../../database/models/User";
+import UserRoles from "../../types/userRoles";
+import OrderStatus from "../../types/orderStatus";
 
 ProductOrder.associations;
 
