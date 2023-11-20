@@ -74,7 +74,7 @@ class OrderService {
 
     await findOrder.update({ status: OrderStatus.CANCELED });
 
-    return resp(203, "");
+    return resp(200, "Updated");
   }
 }
 

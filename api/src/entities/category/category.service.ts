@@ -24,7 +24,7 @@ class CategoryService {
 
     await this.model.create({ name });
 
-    return resp(201, "");
+    return resp(201, "Created");
   }
 
   async update(categoryId: number, name: string) {
@@ -40,7 +40,7 @@ class CategoryService {
 
     findOldCategory.update({ name });
 
-    return resp(203, "");
+    return resp(200, "Updated");
   }
 
   async delete(categoryId: number) {
@@ -54,7 +54,7 @@ class CategoryService {
 
     await findCategory.destroy();
 
-    return resp(203, "");
+    return resp(200, "Deleted");
   }
 }
 

@@ -3,4 +3,5 @@ export default interface CreateProductDTO {
   price: number;
   description: string;
   categories: number[];
+  imageUrl?: string;
 }

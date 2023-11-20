@@ -63,4 +63,9 @@ User.belongsToMany(Product, {
   through: Cart,
 });
 
+Cart.belongsTo(Product, {
+  foreignKey: "productId",
+  as: "product",
+});
+
 export default Cart;

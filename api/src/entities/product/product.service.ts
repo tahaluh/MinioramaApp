@@ -77,7 +77,7 @@ class ProductService {
 
     await ProductCategory.bulkCreate(productCategory);
 
-    return resp(201, "");
+    return resp(201, "Created");
   }
 
   async update(product: UpdateProductDTO, productId: string) {
