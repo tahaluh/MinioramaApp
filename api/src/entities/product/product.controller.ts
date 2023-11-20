@@ -6,7 +6,21 @@ class ProductController {
 
   async get(req: Request, res: Response, next: NextFunction) {
     try {
-      const { status, message } = await this.service.get();
+      const { category, page = 0, limit = 10, search } = req.query;
+
+      let categories: string[] = [];
+
+      if (typeof category === "string") {
+        categories = category.split(",");
+      } else if (Array.isArray(category)) {
+        categories = category.map(String);
+      }
+      const { status, message } = await this.service.get(
+        +page,
+        +limit,
+        categories,
+        search as string
+      );
       res.status(status).json(message);
     } catch (error) {
       next(error);

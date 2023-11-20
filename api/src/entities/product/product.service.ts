@@ -1,4 +1,4 @@
-import { ModelStatic } from "sequelize";
+import { ModelStatic, Op } from "sequelize";
 import Product from "../../database/models/Product";
 import Category from "../../database/models/Category";
 import { resp } from "../../utils/resp";
@@ -16,14 +16,39 @@ ProductCategory.associations;
 class ProductService {
   private model: ModelStatic<Product> = Product;
 
-  async get() {
+  async get(
+    page: number = 0,
+    limit: number = 25,
+    categories: string[] = [],
+    search: string = ""
+  ) {
+    const searchWhereCondition: any = {};
+    const categoriesWhereCondition: any = {};
+
+    if (search !== "") {
+      searchWhereCondition[Op.or] = [
+        { name: { [Op.substring]: search } },
+        { description: { [Op.substring]: search } },
+      ];
+    }
+
+    if (categories.length > 0) {
+      categoriesWhereCondition[Op.or] = categories.map((e) => ({
+        id: e,
+      }));
+    }
+
     const products = await this.model.findAll({
       include: [
         {
           model: Category,
           as: "categories",
+          where: categoriesWhereCondition,
         },
       ],
+      where: searchWhereCondition,
+      limit,
+      offset: page * limit,
     });
 
     return resp(200, products);

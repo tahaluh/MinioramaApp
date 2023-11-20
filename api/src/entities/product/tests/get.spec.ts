@@ -64,8 +64,12 @@ describe("ProductService - get", () => {
         {
           model: mockCategoryModel,
           as: "categories",
+          where: {},
         },
       ],
+      limit: 25,
+      offset: 0,
+      where: {},
     });
 
     expect(result.message).toEqual(mockProducts);
