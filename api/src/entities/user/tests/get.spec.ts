@@ -32,6 +32,9 @@ describe("UserService", () => {
     expect(mockModel.findAll).toHaveBeenCalledTimes(1);
     expect(mockModel.findAll).toHaveBeenCalledWith({
       attributes: { exclude: ["password"] },
+      limit: 25,
+      offset: 0,
+      where: {},
     });
     expect(result.status).toBe(200);
     expect(result.message).toEqual(mockUsers);

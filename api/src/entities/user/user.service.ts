@@ -1,4 +1,4 @@
-import { ModelStatic } from "sequelize";
+import { ModelStatic, Op } from "sequelize";
 import User from "../../database/models/User";
 import { resp } from "../../utils/resp";
 import md5 from "md5";
@@ -12,9 +12,21 @@ import changepasswordValidation from "./validations/changepassword";
 class UserService {
   private model: ModelStatic<User> = User;
 
-  async get() {
+  async get(page: number = 0, limit: number = 25, search: string = "") {
+    const searchWhereCondition: any = {};
+
+    if (search !== "") {
+      searchWhereCondition[Op.or] = [
+        { name: { [Op.substring]: search } },
+        { email: { [Op.substring]: search } },
+      ];
+    }
+
     const users = await this.model.findAll({
       attributes: { exclude: ["password"] },
+      where: searchWhereCondition,
+      limit,
+      offset: page * limit,
     });
     return resp(200, users);
   }

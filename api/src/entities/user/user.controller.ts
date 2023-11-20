@@ -6,7 +6,12 @@ class UserController {
 
   async get(req: Request, res: Response, next: NextFunction) {
     try {
-      const { status, message } = await this.service.get();
+      const { page = 0, limit = 10, search } = req.query;
+      const { status, message } = await this.service.get(
+        +page,
+        +limit,
+        search as string
+      );
       res.status(status).json(message);
     } catch (error) {
       next(error);
