@@ -7,13 +7,17 @@
 ---
 # 💼 Tecnologias Utilizadas
 
-As seguintes ferramentas foram usadas na construção do projeto (Front-end):
+As seguintes ferramentas foram usadas na construção do projeto:
 
+### Api:
 - Node.js
 - Express
 - Sequelize
 - Swagger
 - ReactJS
+
+### Client:
+- ...
 
 # ⚙️ Instalação
 
@@ -32,6 +36,10 @@ $ cd ./api
 
 $ npm install
 ```
+
+### Client
+
+...
 
 ### Inicialize o docker
 
@@ -55,7 +63,7 @@ $ docker-compose up
 
 O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas nas seguintes tarefas:
 
-- [ ] Desenvolvimento do fron-end
+- [ ] Desenvolvimento do client
 - [ ] Integração com Api de pagamentos stripe
 
 
