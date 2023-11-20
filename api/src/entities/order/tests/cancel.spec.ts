@@ -16,6 +16,10 @@ jest.mock("../../../database/models/User", () => ({
   belongsToMany: jest.fn(),
 }));
 
+jest.mock("../../../database/models/Cart", () => ({
+  belongsTo: jest.fn(),
+}));
+
 describe("OrderService - cancel", () => {
   let orderService: OrderService;
   let mockOrderModel: ModelStatic<Order>;
@@ -52,8 +56,8 @@ describe("OrderService - cancel", () => {
       status: OrderStatus.CANCELED,
     });
 
-    expect(result.status).toBe(203);
-    expect(result.message).toBe("");
+    expect(result.status).toBe(200);
+    expect(result.message).toBe("Updated");
   });
 
   it("should return 404 if the order is not found", async () => {

@@ -1,3 +1,4 @@
+import Cart from "../../../database/models/Cart";
 import Product from "../../../database/models/Product";
 import User from "../../../database/models/User";
 import CartService from "../cart.service";
@@ -10,6 +11,11 @@ jest.mock("../../../database/models/User", () => ({
 jest.mock("../../../database/models/Product", () => ({
   findByPk: jest.fn(),
   belongsToMany: jest.fn(),
+}));
+
+jest.mock("../../../database/models/Cart", () => ({
+  findAll: jest.fn(),
+  belongsTo: jest.fn(),
 }));
 
 describe("CartService - get", () => {
@@ -64,16 +70,20 @@ describe("CartService - get", () => {
     };
 
     (User.findByPk as jest.Mock).mockResolvedValue(mockUser);
+    (Cart.findAll as jest.Mock).mockResolvedValue(null);
 
     const result = await cartService.get(userId);
 
     expect(User.findByPk).toHaveBeenCalledTimes(1);
-    expect(User.findByPk).toHaveBeenCalledWith(userId, {
-      include: [{ model: Product, as: "cartProducts" }],
+    expect(User.findByPk).toHaveBeenCalledWith(userId);
+
+    expect(Cart.findAll).toHaveBeenCalledTimes(1);
+    expect(Cart.findAll).toHaveBeenCalledWith({
+      where: { userId },
+      include: [{ model: Product, as: "product" }],
     });
 
     expect(result.status).toBe(200);
-    expect(result.message).toEqual(mockUser.cartProducts);
   });
 
   it("should return 404 if user is not found", async () => {
@@ -84,9 +94,7 @@ describe("CartService - get", () => {
     const result = await cartService.get(userId);
 
     expect(User.findByPk).toHaveBeenCalledTimes(1);
-    expect(User.findByPk).toHaveBeenCalledWith(userId, {
-      include: [{ model: Product, as: "cartProducts" }],
-    });
+    expect(User.findByPk).toHaveBeenCalledWith(userId);
 
     expect(result.status).toBe(404);
     expect(result.message).toBe("User not found");

@@ -92,7 +92,7 @@ describe("CartService - update", () => {
       where: { productId, userId },
     });
 
-    expect(result.status).toBe(204);
-    expect(result.message).toBe("");
+    expect(result.status).toBe(200);
+    expect(result.message).toBe("Updated");
   });
 });

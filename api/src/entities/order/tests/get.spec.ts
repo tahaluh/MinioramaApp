@@ -18,6 +18,10 @@ jest.mock("../../../database/models/User", () => ({
   belongsToMany: jest.fn(),
 }));
 
+jest.mock("../../../database/models/Cart", () => ({
+  belongsTo: jest.fn(),
+}));
+
 describe("OrderService - get", () => {
   let orderService: OrderService;
   let mockOrderModel: jest.Mocked<ModelStatic<Order>>;

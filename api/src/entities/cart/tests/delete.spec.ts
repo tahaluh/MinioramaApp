@@ -77,6 +77,6 @@ describe("CartService - delete", () => {
     });
 
     expect(result.status).toBe(204);
-    expect(result.message).toBe("");
+    expect(result.message).toBe("Deleted");
   });
 });

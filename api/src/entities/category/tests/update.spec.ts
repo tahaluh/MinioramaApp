@@ -50,8 +50,8 @@ describe("CategoryService - update", () => {
     expect(mockCategory.update).toHaveBeenCalledTimes(1);
     expect(mockCategory.update).toHaveBeenCalledWith({ name: updatedName });
 
-    expect(result.status).toBe(203);
-    expect(result.message).toBe("");
+    expect(result.status).toBe(200);
+    expect(result.message).toBe("Updated");
   });
 
   it("should handle validation errors when updating a category", async () => {

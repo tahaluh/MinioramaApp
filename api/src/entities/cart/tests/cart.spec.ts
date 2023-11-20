@@ -70,7 +70,7 @@ describe("CartService - cart", () => {
     });
 
     expect(result.status).toBe(201);
-    expect(result.message).toBe("");
+    expect(result.message).toBe("Created");
   });
 
   it("should update the quantity of a product already present in the cart", async () => {
@@ -106,8 +106,8 @@ describe("CartService - cart", () => {
       quantity: existingCart.quantity + 1,
     });
 
-    expect(result.status).toBe(204);
-    expect(result.message).toBe("");
+    expect(result.status).toBe(200);
+    expect(result.message).toBe("Updated");
   });
 
   it("should return a 404 if the product is not found", async () => {

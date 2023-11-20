@@ -51,8 +51,8 @@ describe("CategoryService - delete", () => {
 
     expect(mockCategory.destroy).toHaveBeenCalledTimes(1);
 
-    expect(result.status).toBe(203);
-    expect(result.message).toBe("");
+    expect(result.status).toBe(200);
+    expect(result.message).toBe("Deleted");
   });
 
   it("should handle 'Category not found' when deleting a category", async () => {

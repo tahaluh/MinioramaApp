@@ -97,7 +97,7 @@ describe("ProductService - create", () => {
     );
 
     expect(result.status).toBe(201);
-    expect(result.message).toBe("");
+    expect(result.message).toBe("Created");
   });
 
   it("should handle validation errors when creating a product", async () => {
