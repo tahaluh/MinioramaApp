@@ -1,8 +1,0 @@
-Next
-
-Mysql
-Express.js 
-Jest
-NodeJs
-Sequelize
-Aws
