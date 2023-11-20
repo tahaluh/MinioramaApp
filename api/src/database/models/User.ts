@@ -4,7 +4,7 @@ import sequelize from "sequelize";
 
 export enum UserRoles {
   ADMIN = "ADMIN",
-  CUSTOMER = "COSTOMER",
+  CUSTOMER = "CUSTOMER",
 }
 
 class User extends Model {
