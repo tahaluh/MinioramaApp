@@ -58,4 +58,9 @@ User.belongsToMany(Product, {
   through: Wishlist,
 });
 
+Wishlist.belongsTo(Product, {
+  foreignKey: "productId",
+  as: "product",
+});
+
 export default Wishlist;

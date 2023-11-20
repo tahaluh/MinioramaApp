@@ -14,6 +14,9 @@ jest.mock("../../../database/models/Category", () => ({
 jest.mock("../../../database/models/User", () => ({
   belongsToMany: jest.fn(),
 }));
+jest.mock("../../../database/models/Wishlist", () => ({
+  belongsTo: jest.fn(),
+}));
 
 describe("ProductService - get", () => {
   let productService: ProductService;

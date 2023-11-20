@@ -21,6 +21,10 @@ jest.mock("../../../database/models/User", () => ({
   belongsToMany: jest.fn(),
 }));
 
+jest.mock("../../../database/models/Wishlist", () => ({
+  belongsTo: jest.fn(),
+}));
+
 describe("ProductService - delete", () => {
   let productService: ProductService;
   let mockProductModel: jest.Mocked<ModelStatic<Product>>;

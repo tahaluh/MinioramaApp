@@ -61,8 +61,15 @@ class ProductController {
 
   async getWishlist(req: Request, res: Response, next: NextFunction) {
     try {
+      const { page = 0, limit = 10, search } = req.query;
+
       const userId = res.locals.user.id;
-      const { status, message } = await this.service.getWishlist(userId);
+      const { status, message } = await this.service.getWishlist(
+        userId,
+        +page,
+        +limit,
+        search as string
+      );
       res.status(status).json(message);
     } catch (error) {
       next(error);

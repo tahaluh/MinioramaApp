@@ -121,14 +121,38 @@ class ProductService {
     return resp(204, "");
   }
 
-  async getWishlist(userId: number) {
-    const findUser = (await User.findByPk(userId, {
-      include: [{ model: Product, as: "products" }],
-    })) as User & { products: (Product & { Wishlist: Wishlist })[] };
-
+  async getWishlist(
+    userId: number,
+    page: number = 0,
+    limit: number = 25,
+    search: string = ""
+  ) {
+    const findUser = await User.findByPk(userId);
     if (!findUser) return resp(404, "User not found");
 
-    return resp(200, findUser.products);
+    const searchWhereCondition: any = {};
+
+    if (search !== "") {
+      searchWhereCondition[Op.or] = [
+        { name: { [Op.substring]: search } },
+        { description: { [Op.substring]: search } },
+      ];
+    }
+
+    const wishlistProducts = await Wishlist.findAll({
+      where: { userId },
+      include: [
+        {
+          model: Product,
+          as: "product",
+          where: searchWhereCondition,
+        },
+      ],
+      limit,
+      offset: page * limit,
+    });
+
+    return resp(200, wishlistProducts || []);
   }
 
   async wishlist(productId: number, userId: number) {
