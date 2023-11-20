@@ -95,8 +95,6 @@ class UserService {
     if (hashOldPassword !== user?.password)
       return resp(400, "Old password is incorrect");
 
-    console.log("passou ue");
-
     const hashPassword = md5(newPassword);
 
     await user.update({
