@@ -2,6 +2,8 @@ import Category from "../../database/models/Category";
 import { ModelStatic } from "sequelize";
 import { resp } from "../../utils/resp";
 import Product from "../../database/models/Product";
+import createCategoryValidation from "./validations/createCategory";
+import updateCategoryValidation from "./validations/updateCategory";
 
 class CategoryService {
   private model: ModelStatic<Category> = Category;
@@ -13,6 +15,9 @@ class CategoryService {
   }
 
   async create(name: string) {
+    const { error } = createCategoryValidation.validate({ name });
+    if (error) return resp(400, error.message);
+
     const findCategory = await this.model.findOne({ where: { name } });
     if (findCategory)
       return resp(400, "Category with this name already exists");
@@ -23,6 +28,9 @@ class CategoryService {
   }
 
   async update(categoryId: number, name: string) {
+    const { error } = updateCategoryValidation.validate({ name });
+    if (error) return resp(400, error.message);
+
     const findOldCategory = await this.model.findByPk(categoryId);
     if (!findOldCategory) return resp(404, "Category not found");
 
